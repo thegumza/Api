@@ -15,8 +15,9 @@
   "homepage": "https://bitbucket.org/thegumza/rubberprice#readme",
   "dependencies": {
     "cheerio": "^0.20.0",
+    "firebase": "^3.2.1",
+    "iconv-lite": "*",
     "request": "^2.74.0",
-    "restify": "*",
-    "iconv-lite": "*"
+    "restify": "*"
   }
 }

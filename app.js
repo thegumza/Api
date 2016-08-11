@@ -5,7 +5,7 @@ var request = require('request');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 var restify = require('restify');
-
+var fs = require('fs');
 var server = restify.createServer({
     name: 'myapp',
     version: '1.0.0'
@@ -56,7 +56,14 @@ server.get('/', function (req, res, next) {
             ya['rubber'] = pa;
             ya['rubber_smoke'] = mea;
             console.dir(JSON.stringify(ya));
-            res.send(ya);
+            res.send("Success");
+            fs.writeFile("./price.json", JSON.stringify(ya), function (err) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                console.log("The file was saved!");
+            });
         } else {
             console.trace();
             console.error(error);
