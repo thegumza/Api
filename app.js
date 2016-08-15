@@ -30,28 +30,34 @@ server.get('/', function (req, res, next) {
             html = iconv.decode(html, 'iso-8859-11');
             var $ = cheerio.load(html);
             var x = $("td[height='316'] tr[bgcolor='#F7FFE1']");
-            var mea = {};
-            var array = [];
+            var mea = [];
+            var array = {};
             var i;
+
             for (i = 1; i < x.length; i++) {
+                var title = $(x[i]).text().replace(/ /g, '').split('\n')[2];
                 array = {
+                    'name': title,
                     'price': $(x[i]).text().replace(/ /g, '').split('\n').slice(3, 8),
                     'volume': $(x[i]).text().replace(/ /g, '').split('\n').slice(8, 9)[0]
                 }
-                var title = $(x[i]).text().replace(/ /g, '').split('\n')[2];
-                mea[title] = array;
+
+                mea.push(array);
             }
 
 
             x = $("td[height='297'] tr[bgcolor='#F7FFE1']");
-            var pa = {};
+            var pa = [];
+
             for (i = 1; i < x.length; i++) {
+                title = $(x[i]).text().replace(/ /g, '').replace(/ /g, '').replace(/\n\n/g, '\n').split('\n')[2];
                 array = {
+                    'name': title,
                     'price': $(x[i]).text().replace(/ /g, '').replace(/\n\n/g, '\n').split('\n').slice(3, 8),
                     'volume': $(x[i]).text().replace(/ /g, '').replace(/\n\n/g, '\n').split('\n').slice(8, 13)
                 }
-                title = $(x[i]).text().replace(/ /g, '').replace(/ /g, '').replace(/\n\n/g, '\n').split('\n')[2];
-                pa[title] = array;
+
+                pa.push(array);
             }
             ya['rubber'] = pa;
             ya['rubber_smoke'] = mea;
