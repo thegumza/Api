@@ -6,6 +6,8 @@ var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 var restify = require('restify');
 var fs = require('fs');
+var tabletojson = require('tabletojson');
+
 var server = restify.createServer({
     name: 'myapp',
     version: '1.0.0'
@@ -23,7 +25,14 @@ server.get('/', function (req, res, next) {
         retryDelay: 500,
         encoding: null
     };
-
+    var options2 = {
+        url: "http://www.rubber.co.th/rubber2012/menu5.php",
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)'
+        },
+        retryDelay: 500,
+        encoding: null
+    };
     request(options, function (error, response, html) {
         if (!error) {
             var ya = {};
@@ -35,7 +44,7 @@ server.get('/', function (req, res, next) {
             var i;
 
             for (i = 1; i < x.length; i++) {
-                var title = $(x[i]).text().replace(/ /g, '').split('\n')[2];
+                var title = $(x[i]).text().replace(/ /g, '').split('\n')[1];
                 array = {
                     'name': title,
                     'price': $(x[i]).text().replace(/ /g, '').split('\n').slice(3, 8),
@@ -50,7 +59,7 @@ server.get('/', function (req, res, next) {
             var pa = [];
 
             for (i = 1; i < x.length; i++) {
-                title = $(x[i]).text().replace(/ /g, '').replace(/ /g, '').replace(/\n\n/g, '\n').split('\n')[2];
+                title = $(x[i]).text().replace(/ /g, '').replace(/ /g, '').replace(/\n\n/g, '\n').split('\n')[1];
                 array = {
                     'name': title,
                     'price': $(x[i]).text().replace(/ /g, '').replace(/\n\n/g, '\n').split('\n').slice(3, 8),
@@ -61,6 +70,60 @@ server.get('/', function (req, res, next) {
             }
             ya['rubber'] = pa;
             ya['rubber_smoke'] = mea;
+            console.dir(JSON.stringify(ya));
+            res.send("Success");
+            fs.writeFile("./price.json", JSON.stringify(ya), function (err) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                console.log("The file was saved!");
+            });
+        } else {
+            console.trace();
+            console.error(error);
+        }
+    });
+
+    request(options2, function (error, response, html) {
+        if (!error) {
+            var ya = {};
+            html = iconv.decode(html, 'iso-8859-11');
+            var $ = cheerio.load(html);
+            var y = $("tr[bgcolor='#FFFFFF']");
+            var z;
+            var mea = [];
+
+            var array = {};
+            var i, j;
+
+            for (i = 0; i < y.length; i++) {
+                z = $(y[i]).find('font').contents()
+                    .filter(function () {
+                        return this.nodeType === 3; //Node.TEXT_NODE
+                    });
+                /*var result = [];
+                 for (key in z) {
+                 result.push(obj[key][0]);
+                 result[result.length-1]["data"] = key;
+                 console.log(key);
+                 }*/
+                var price = [];
+                for (j = 1; j < 7; j++) {
+
+                    price.push(z[j].data.replace(/\s/g, ""));
+
+                }
+                console.log(price);
+                array = {
+                    'dataDate': $(z[0]).text(),
+                    'price': price
+                }
+                mea.push(array);
+            }
+
+
+            ya['rubber_price'] = mea;
             console.dir(JSON.stringify(ya));
             res.send("Success");
             fs.writeFile("./price.json", JSON.stringify(ya), function (err) {
