@@ -102,19 +102,13 @@ server.get('/', function (req, res, next) {
                     .filter(function () {
                         return this.nodeType === 3; //Node.TEXT_NODE
                     });
-                /*var result = [];
-                 for (key in z) {
-                 result.push(obj[key][0]);
-                 result[result.length-1]["data"] = key;
-                 console.log(key);
-                 }*/
+
                 var price = [];
                 for (j = 1; j < 7; j++) {
 
                     price.push(z[j].data.replace(/\s/g, ""));
 
                 }
-                console.log(price);
                 array = {
                     'dataDate': $(z[0]).text(),
                     'price': price
