@@ -87,7 +87,6 @@ server.get('/', function (req, res, next) {
 
     request(options2, function (error, response, html) {
         if (!error) {
-            var ya = {};
             html = iconv.decode(html, 'iso-8859-11');
             var $ = cheerio.load(html);
             var y = $("tr[bgcolor='#FFFFFF']");
@@ -119,11 +118,9 @@ server.get('/', function (req, res, next) {
                 mea.push(array);
             }
 
-
-            ya = mea;
-            console.dir(JSON.stringify(ya));
+            console.dir(JSON.stringify(mea));
             res.send("Success");
-            fs.writeFile("./price.json", JSON.stringify(ya), function (err) {
+            fs.writeFile("./daily_price.json", JSON.stringify(mea), function (err) {
                 if (err) {
                     return console.log(err);
                 }
