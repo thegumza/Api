@@ -111,13 +111,16 @@ server.get('/', function (req, res, next) {
                 }
                 array = {
                     'dataDate': $(z[0]).text(),
-                    'price': price
+                    'local_price': $(z[1]).text().replace(/\s/g, ""),
+                    'latex_price': $(z[2]).text().replace(/\s/g, ""),
+                    'global_price': $(z[3]).text().replace(/\s/g, ""),
+                    'smoke_sheet_price': $(z[4]).text().replace(/\s/g, "")
                 }
                 mea.push(array);
             }
 
 
-            ya['rubber_price'] = mea;
+            ya = mea;
             console.dir(JSON.stringify(ya));
             res.send("Success");
             fs.writeFile("./price.json", JSON.stringify(ya), function (err) {
