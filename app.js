@@ -16,6 +16,11 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
+server.get('/price', function (req, res, next) {
+    fs.readFile('price.json', 'utf8', function(err, contents) {
+        console.log(contents);
+    });
+})
 server.get('/', function (req, res, next) {
     var options = {
         url: "http://www.rubberthai.com/price/today%20price/ebay_price.htm",
@@ -136,7 +141,7 @@ server.get('/', function (req, res, next) {
     return next();
 });
 
-app.listen(process.env.PORT || 3000, function(){
-    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+server.listen(80, function () {
+    console.log('%s listening at %s', server.name, server.url);
 });
 
