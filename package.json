@@ -1,6 +1,6 @@
 {
   "name": "rubberprice",
-  "config" : { "port" : "80" },
+  "config" : { "port" : "8080" },
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
