@@ -18,10 +18,10 @@ server.use(restify.bodyParser());
 
 server.get('/price', function (req, res, next) {
     fs.readFile('price.json', 'utf8', function(err, contents) {
-        console.log(contents);
+        res.send(JSON.parse(contents));
     });
 })
-server.get('/', function (req, res, next) {
+server.get('/gen', function (req, res, next) {
     var options = {
         url: "http://www.rubberthai.com/price/today%20price/ebay_price.htm",
         headers: {
