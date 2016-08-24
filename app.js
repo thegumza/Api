@@ -136,7 +136,7 @@ server.get('/', function (req, res, next) {
     return next();
 });
 
-server.listen(80, function () {
-    console.log('%s listening at %s', server.name, server.url);
+app.listen(process.env.PORT || 3000, function(){
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
 
