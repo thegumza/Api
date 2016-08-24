@@ -141,7 +141,7 @@ server.get('/gen', function (req, res, next) {
     return next();
 });
 
-server.listen(env.PORT || 8000, function () {
+server.listen(process.env.npm_package_config_port, function () {
     console.log('%s listening at %s', server.name, server.url);
 });
 
