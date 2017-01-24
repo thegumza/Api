@@ -1,5 +1,5 @@
 var request = require("request");
-
+var fs = require('fs');
 var options = { method: 'GET',
     url: 'http://www.thaigold.info/RealTimeDataV2/gtdata_.txt',
     headers:
@@ -9,5 +9,9 @@ var options = { method: 'GET',
 request(options, function (error, response, body) {
     if (error) throw new Error(error);
 
-    console.log(body);
+    if (fs.existsSync(path)) {
+        console.log(body);
+    }
 });
+
+
