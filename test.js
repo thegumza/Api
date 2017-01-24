@@ -1,13 +1,13 @@
-curl = require('node-curl');
-curl('www.google.com', function(err) {
-    console.info(this.status);
-    console.info('-----');
-    console.info(this.body);
-    console.info('-----');
-    console.info(this.info('SIZE_DOWNLOAD'));
-});
+var request = require("request");
 
-curl = require('node-curl')
-curl('www.google.com', {VERBOSE: 1, RAW: 1}, function(err) {
-    console.info(this);
+var options = { method: 'GET',
+    url: 'http://www.thaigold.info/RealTimeDataV2/gtdata_.txt',
+    headers:
+        { 'postman-token': '38253c1d-7dfd-e5b5-e2d4-952c9898db56',
+            'cache-control': 'no-cache' } };
+
+request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+
+    console.log(body);
 });

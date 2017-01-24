@@ -6,7 +6,6 @@ var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 var restify = require('restify');
 var fs = require('fs');
-var tabletojson = require('tabletojson');
 
 var server = restify.createServer({
     name: 'myapp',
